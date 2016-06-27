@@ -1,7 +1,7 @@
 import sys
 import sqlite3
 import markovgen
-import tweepy
+import twitter_init
 
 # database shit
 conn = sqlite3.connect('seinfeld.db')
@@ -9,13 +9,7 @@ c = conn.cursor()
 conn.text_factory = sqlite3.OptimizedUnicode
 
 # twitter shit
-CONSUMER_KEY = 'Vpp5r1sm5Ai2zDZEdfvvtuAy2'#keep the quotes, replace this with your consumer key
-CONSUMER_SECRET = 'OVlyASOg6DyYpGSyxV2DFkrfP7XwUyYf9ySwCBrrDFip6YkKaZ'#keep the quotes, replace this with your consumer secret key
-ACCESS_KEY = '745765003052081152-ve196Gm6MuVHur5MuYbn6WAGB23zx2y'#keep the quotes, replace this with your access token
-ACCESS_SECRET = 'yfmughpu3mrG6AUtmIhBn95tuqK1O942BMnvAWzcMjGMP'#keep the quotes, replace this with your access token secret
-auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
-twitter_api = tweepy.API(auth)
+twitter_api = twitter_init.init_account()
 
 def get_lines(charName):
 	# linesList = c.execute('SELECT sentence.text FROM sentence INNER JOIN \
