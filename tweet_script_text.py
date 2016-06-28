@@ -1,3 +1,3 @@
 import random_tweet
 
-random_tweet.generate_tweet_text('JERRY')
+random_tweet.generate_tweet_text()

@@ -2,6 +2,7 @@ import sys
 import sqlite3
 import markovgen
 import twitter_init
+import random
 
 # database shit
 conn = sqlite3.connect('seinfeld.db')
@@ -10,6 +11,11 @@ conn.text_factory = sqlite3.OptimizedUnicode
 
 # twitter shit
 twitter_api = twitter_init.init_account()
+
+# speaker list
+speaker_list = ['JERRY', 'GEORGE', 'ELAINE', 'KRAMER', 'NEWMAN', 'MORTY', \
+	'HELEN', 'FRANK', 'SUSAN', 'ESTELLE', 'PETERMAN', 'PUDDY', 'LEO', \
+	'JACK', 'STEINBRENNER', 'MICKEY']
 
 def get_lines(charName):
 	# linesList = c.execute('SELECT sentence.text FROM sentence INNER JOIN \
@@ -30,17 +36,22 @@ def tuples_to_words(tupleList):
 			words.append(word)
 	return words
 
-def generate_tweet_text(charName):
+def get_char():
+	idx = random.randint(0, (len(speaker_list)-1))
+	return speaker_list[idx]
+
+def generate_tweet_text():
+	charName = get_char()
 	lines = get_lines(charName)
 	words = tuples_to_words(lines)
 	markov = markovgen.Markov(words)
-	tweet = markov.generate_markov_text()
+	tweet = charName + ': ' + markov.generate_markov_text()
 	while(len(tweet) > 140):
-		tweet = markov.generate_markov_text()
+		tweet = charName + ': ' + markov.generate_markov_text()
 	print(tweet)
 	return tweet
 
-def tweet_out(charName):
-	tweet = generate_tweet_text(charName)
+def tweet_out():
+	tweet = generate_tweet_text()
 	twitter_api.update_status(tweet)
 

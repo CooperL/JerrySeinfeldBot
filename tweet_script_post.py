@@ -1,3 +1,3 @@
 import random_tweet
 
-random_tweet.tweet_out('JERRY')
+random_tweet.tweet_out()
