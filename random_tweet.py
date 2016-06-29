@@ -3,6 +3,7 @@ import sqlite3
 import markovgen
 import twitter_init
 import random
+import char_class
 
 # database shit
 conn = sqlite3.connect('seinfeld.db')
@@ -13,9 +14,35 @@ conn.text_factory = sqlite3.OptimizedUnicode
 twitter_api = twitter_init.init_account()
 
 # speaker list
-speaker_list = ['JERRY', 'GEORGE', 'ELAINE', 'KRAMER', 'NEWMAN', 'MORTY', \
-	'HELEN', 'FRANK', 'SUSAN', 'ESTELLE', 'PETERMAN', 'PUDDY', 'LEO', \
-	'JACK', 'STEINBRENNER', 'MICKEY']
+speakerList = []
+speakerList.append(char_class.char_class('JERRY',      14645))
+speakerList.append(char_class.char_class('GEORGE',      9613))
+speakerList.append(char_class.char_class('ELAINE',      7967))
+speakerList.append(char_class.char_class('KRAMER',      6656))
+speakerList.append(char_class.char_class('NEWMAN',       625))
+speakerList.append(char_class.char_class('MORTY',        502))
+speakerList.append(char_class.char_class('HELEN',        470))
+speakerList.append(char_class.char_class('FRANK',        429))
+speakerList.append(char_class.char_class('SUSAN',        382))
+speakerList.append(char_class.char_class('ESTELLE',      273))
+speakerList.append(char_class.char_class('PETERMAN',     199))
+speakerList.append(char_class.char_class('PUDDY',        163))
+speakerList.append(char_class.char_class('LEO',          145))
+speakerList.append(char_class.char_class('JACK',         124))
+speakerList.append(char_class.char_class('STEINBRENNER', 122))
+speakerList.append(char_class.char_class('MICKEY',       118))
+speakerList.append(char_class.char_class('BANIA',        102))
+
+def get_speaker_CDF():
+	totalLines = sum(item.numLines for item in speakerList)
+	for idx, item in enumerate(speakerList):
+		item.probability = item.numLines/totalLines
+		if idx != 0:
+			item.cumulative = speakerList[idx-1].cumulative + item.probability
+		else:
+			item.cumulative = item.probability
+
+get_speaker_CDF()
 
 def get_lines(charName):
 	# linesList = c.execute('SELECT sentence.text FROM sentence INNER JOIN \
@@ -36,12 +63,16 @@ def tuples_to_words(tupleList):
 			words.append(word)
 	return words
 
-def get_char():
-	idx = random.randint(0, (len(speaker_list)-1))
-	return speaker_list[idx]
+def get_char(speakers):
+	randVal = random.random()
+	for item in speakers:
+		if randVal <= item.cumulative:
+			print(item.name)
+			return item.name
+	return speakers[0].name
 
 def generate_tweet_text():
-	charName = get_char()
+	charName = get_char(speakerList)
 	lines = get_lines(charName)
 	words = tuples_to_words(lines)
 	markov = markovgen.Markov(words)
