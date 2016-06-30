@@ -4,6 +4,8 @@ import markovgen
 import twitter_init
 import random
 import char_class
+from datetime import datetime, timedelta
+import time
 
 # database shit
 conn = sqlite3.connect('seinfeld.db')
@@ -67,7 +69,6 @@ def get_char(speakers):
 	randVal = random.random()
 	for item in speakers:
 		if randVal <= item.cumulative:
-			print(item.name)
 			return item.name
 	return speakers[0].name
 
@@ -86,3 +87,15 @@ def tweet_out():
 	tweet = generate_tweet_text()
 	twitter_api.update_status(tweet)
 
+def periodically_tweet():
+	while True:
+		tweet_out()
+		numHours = random.randint(12,24)
+		print('now: ')
+		print(datetime.now())
+		timeToTweet = datetime.now() + timedelta(hours=numHours)
+		print('tweet at: ')
+		print(timeToTweet)
+		while datetime.now() < timeToTweet:
+			time.sleep(60)
+	
