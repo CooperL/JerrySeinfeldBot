@@ -91,11 +91,11 @@ def periodically_tweet():
 	while True:
 		tweet_out()
 		numHours = random.randint(12,24)
-		print('now: ')
-		print(datetime.now())
+		#print('now: ')
+		#print(datetime.now())
 		timeToTweet = datetime.now() + timedelta(hours=numHours)
-		print('tweet at: ')
-		print(timeToTweet)
+		#print('tweet at: ')
+		#print(timeToTweet)
 		while datetime.now() < timeToTweet:
 			time.sleep(60)
 	
