@@ -3,3 +3,4 @@ SeinScrape.py
 seinfeld-scripts-master.zip
 *.pyc
 __pycache__/
+*.out
