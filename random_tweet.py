@@ -70,7 +70,6 @@ def get_char(speakers):
 	for item in speakers:
 		if randVal <= item.cumulative:
 			return item.name
-	return speakers[0].name
 
 def generate_tweet_text():
 	charName = get_char(speakerList)
