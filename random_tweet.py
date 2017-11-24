@@ -76,8 +76,8 @@ def generate_tweet_text():
 	lines = get_lines(charName)
 	words = tuples_to_words(lines)
 	markov = markovgen.Markov(words)
-	tweet = charName + ': ' + markov.generate_markov_text()
-	while(len(tweet) > 140):
+	tweet = charName + ': ' + markov.generate_markov_text() + ' #seinfeld'
+	while(len(tweet) > 280):
 		tweet = charName + ': ' + markov.generate_markov_text()
 	print(tweet)
 	return tweet
